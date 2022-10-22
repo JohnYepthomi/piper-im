@@ -7,21 +7,6 @@ const user = gun.user();
 class User {
   static _user = user;
 
-  static getUserEdges() {
-    if (this._user.is) {
-      const appEdge = this._user.get("app");
-      const publicEdge = appEdge.get("public");
-      const privateEdge = appEdge.get("private");
-      return { appEdge, publicEdge, privateEdge };
-    } else {
-      return {
-        appEdge: undefined,
-        publicEdge: undefined,
-        privateEdge: undefined,
-      };
-    }
-  }
-
   static get() {
     return this._user;
   }
