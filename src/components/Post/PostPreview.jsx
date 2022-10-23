@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import base64encoder from "../utils/base64encoder";
+import base64encoder from "../../utils/base64encoder";
 import { List } from "antd";
 import PostItem from "./PostItem";
 
@@ -25,7 +25,9 @@ export default function PostPreview({
   }
 
   useEffect(() => {
-    if (rawImageFile) base64encoder(rawImageFile);
+    if (rawImageFile) {
+      base64encoder(rawImageFile);
+    }
   }, [rawImageFile]);
 
   useEffect(() => {

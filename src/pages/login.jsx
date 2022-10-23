@@ -10,6 +10,8 @@ import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import User from "../Gun/User";
 import UserEdges from "../Gun/UserEdges";
+// import Gun from "gun"; /* using global CDN import*/
+import SEA from "gun/sea";
 
 export default function Login() {
   const uRef = useRef();
@@ -17,6 +19,15 @@ export default function Login() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const key = "sharedmessagekey";
+  const gun = Gun({
+    peers: ["http://localhost:8765/gun"],
+    localStorage: false,
+  });
+  const user = gun.user().recall({ sessionStorage: true });
+
+  useEffect(() => {
+    User.init(user);
+  }, []);
 
   const showError = (msg) => {
     message.error({ content: msg, key });
@@ -29,16 +40,15 @@ export default function Login() {
 
     message.loading({ content: "Signing you up", key });
 
-    const isCreated = await User.register(pair);
+    const { success, error } = await User.register(pair);
 
-    if (isCreated) {
+    if (success) {
       message.success({
-        content: "Account created sucessfully.",
+        content: "Account created.",
         key,
       });
-      UserEdges.init(User.get());
-    } else {
-      showError("User already exist");
+    } else if (error) {
+      showError(error);
     }
   };
 
@@ -47,20 +57,20 @@ export default function Login() {
     const alias = uRef.current.input.value;
     const passphrase = pRef.current.input.value;
     const pair = { alias, passphrase };
-    const isAuthed = await User.authenticate(pair);
+    const { success, error } = await User.authenticate(pair);
 
-    if (isAuthed) {
+    if (success) {
+      UserEdges.init(User.get());
       message.success({
-        content: "Logged in sucessfully",
+        content: "Logged in",
         key,
         duration: 2,
         onClose: () => {
           navigate("/home");
         },
       });
-      UserEdges.init(User.get());
-    } else {
-      showError("wrong username or password");
+    } else if (error) {
+      showError(error);
     }
   };
 

@@ -1,14 +1,12 @@
-import Gun from "gun";
-import SEA from "gun/sea";
-
-const gun = Gun();
-const user = gun.user();
-
 class User {
-  static _user = user;
+  static _user;
 
   static get() {
     return this._user;
+  }
+
+  static init(user) {
+    this._user = user;
   }
 
   static authenticate(pair) {
@@ -16,10 +14,10 @@ class User {
       this._user.auth(pair.alias, pair.passphrase, (at) => {
         if (at.err) {
           console.log("auth error: ", at.err);
-          resolve(false);
+          resolve({ success: false, error: at.err });
         } else {
           console.log("auth success");
-          resolve(true);
+          resolve({ success: true, error: false });
         }
       });
     });
@@ -29,11 +27,11 @@ class User {
     return new Promise((resolve, reject) => {
       this._user.create(pair.alias, pair.passphrase, (ack) => {
         if (ack.ok !== 0) {
-          console.log("user create error");
-          resolve(false);
+          console.log("user create error", ack.err);
+          resolve({ success: false, error: ack.err });
         } else {
           console.log("user created");
-          resolve(true);
+          resolve({ success: true, error: false });
         }
       });
     });
@@ -46,7 +44,5 @@ class User {
     }
   }
 }
-
-Object.freeze(User);
 
 export default User;

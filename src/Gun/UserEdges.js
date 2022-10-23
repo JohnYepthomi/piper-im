@@ -7,9 +7,8 @@ export default {
   friends: undefined,
   messages: undefined,
   init(user) {
-    if (user.is && !this.app && !this.public && !this.private) {
+    if (user.is) {
       this.app = user.get("app");
-
       //Public Edges
       this.public = this.app.get("public");
       this.posts = this.public.get("posts");
@@ -19,7 +18,6 @@ export default {
       this.notes = this.private.get("notes");
       this.messages = this.private.get("messages");
       this.friends = this.private.get("friends");
-      Object.freeze(this);
     }
   },
 };

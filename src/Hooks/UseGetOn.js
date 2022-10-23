@@ -18,6 +18,7 @@ export default function UseGetOn(cb) {
           {
             id: postId,
             post: data.post,
+            image: data.image,
             author: data.author,
           },
         ]);

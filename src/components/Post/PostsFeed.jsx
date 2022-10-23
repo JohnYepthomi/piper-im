@@ -7,6 +7,7 @@ import useGetOn from "../../Hooks/UseGetOn";
 
 export default function PostsFeed() {
   const [initLoading, setInitLoading] = useState(true);
+  const [createPost, setCreatePost] = useState(false);
   const posts = useGetOn();
 
   console.log("PostFeed()");
@@ -26,7 +27,7 @@ export default function PostsFeed() {
       itemLayout="vertical"
       size="large"
       dataSource={posts && posts}
-      header={<NewPost />}
+      header={<NewPost setCreatePost={setCreatePost} />}
       renderItem={(item) => <PostItem item={item} loading={false} />}
     />
   );

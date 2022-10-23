@@ -3,9 +3,11 @@ import Posts from "./posts";
 import Login from "./login";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import Friends from "./Friends";
 import { Tabs } from "antd";
 import { LayoutOutlined, SmileOutlined, TeamOutlined } from "@ant-design/icons";
 import User from "../Gun/User";
+import clearObject from "../utils/ClearObject";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -18,6 +20,10 @@ export default function Home() {
     if (!User._user.is) {
       navigate("/");
     }
+
+    return () => {
+      User.logOut();
+    };
   });
 
   return (
@@ -57,7 +63,7 @@ export default function Home() {
               </span>
             ),
             key: "3",
-            children: `Content of Tab Pane 3`,
+            children: <Friends />,
           },
         ]}
       />

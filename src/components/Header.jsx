@@ -6,6 +6,7 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import User from "../Gun/User";
+import clearObject from "../utils/ClearObject";
 
 export default function Header({ username }) {
   const { Text } = Typography;
@@ -68,11 +69,11 @@ export default function Header({ username }) {
           <label
             style={{
               fontWeight: "bold",
-              fontSize: "0.85rem",
+              fontSize: "1rem",
               marginLeft: "5px",
             }}
           >
-            {username && username.toUpperCase()}
+            {username && username}
           </label>
         </Button>
       </div>
